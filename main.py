@@ -4,6 +4,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+from datetime import datetime as dt
+
 
 def get_driver():
   #options to make browsing easier
@@ -25,19 +27,28 @@ def clean_text(text):
   output = float(text.split(": ")[1])
   return output
 
+def write_file(text):
+  ''' Write the temp to a datetime named file '''
+  now = dt.now().strftime('%Y-%m-%d-%H-%M-%S')
+  filename = f"{now}.txt"
+  with open(filename, "w") as file:
+    file.write(str(text))
+
 def main():
   driver = get_driver()
-  #xpath can be found by using inspect on the 
-  #web page to locate the item of interest
+  #inspect the web page to locate the item of interest
+  #to find the full xpath
   driver.find_element(by="id", value="id_username").send_keys("automated")
   time.sleep(2)
   driver.find_element(by="id", value="id_password").send_keys("automatedautomated" + Keys.RETURN)
   time.sleep(2)
   # click 'home' button
   driver.find_element(by="xpath", value="/html/body/nav/div/a").click()
-  element = driver.find_element(by="xpath", value="/html/body/div[1]/div/h1[2]")
-  time.sleep(2)  
-  return clean_text(element.text)
+
+  for i in range(10):
+    time.sleep(2)  
+    element = driver.find_element(by="xpath", value="/html/body/div[1]/div/h1[2]")
+    write_file(clean_text(element.text))
 
 print(main())
 
