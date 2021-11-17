@@ -36,7 +36,7 @@ def main():
   # click 'home' button
   driver.find_element(by="xpath", value="/html/body/nav/div/a").click()
   element = driver.find_element(by="xpath", value="/html/body/div[1]/div/h1[2]")
-  time.sleep(2)
+  time.sleep(2)  
   return clean_text(element.text)
 
 print(main())
